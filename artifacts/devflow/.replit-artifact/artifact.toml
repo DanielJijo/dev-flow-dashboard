@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "DevFlow"
+description = "A polished project-management dashboard for small software teams, with a responsive Kanban board, task details, activity, analytics, and dark mode."
+version = "1.0.0"
+id = "artifacts/devflow"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20922
+
+[services.development]
+run = "pnpm --filter @workspace/devflow run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/devflow", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/devflow/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20922"
+BASE_PATH = "/"
